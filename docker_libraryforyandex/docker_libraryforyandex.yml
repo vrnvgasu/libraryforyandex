@@ -1,0 +1,14 @@
+version: "3.9"
+services:
+  postgres:
+    container_name: db_libraryforyandex
+    image: postgres
+    environment:
+      POSTGRES_DB: "libraryforyandex"
+      POSTGRES_USER: "user"
+      POSTGRES_PASSWORD: "qwerty"
+    ports:
+      - "10905:5432"
+    restart: unless-stopped
+    volumes:
+      - ./data:/var/lib/postgresql/data

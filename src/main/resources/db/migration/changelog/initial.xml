@@ -1,0 +1,143 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+
+<changeSet id="1" author="Dmitrii">
+    <createTable tableName="genres" remarks="Жанры">
+      <column name="id" type="bigserial">
+        <constraints primaryKey="true" nullable="false" />
+      </column>
+      <column name="title" type="varchar(50)" remarks="Название">
+        <constraints nullable="false" unique="true" />
+      </column>
+    </createTable>
+  </changeSet>
+
+  <changeSet id="2" author="Dmitrii">
+    <createTable tableName="authors" remarks="Авторы">
+      <column name="id" type="bigserial">
+        <constraints primaryKey="true" nullable="false" />
+      </column>
+      <column name="full_name" type="varchar(500)" remarks="ФИО автора">
+        <constraints nullable="false" />
+      </column>
+      <column name="birth_date" type="date" remarks="Дата рождения" />
+    </createTable>
+  </changeSet>
+
+  <changeSet id="3" author="Dmitrii">
+    <createTable tableName="books" remarks="Книги">
+      <column name="id" type="bigserial">
+        <constraints primaryKey="true" nullable="false" />
+      </column>
+      <column name="title" type="varchar(500)" remarks="Название">
+        <constraints nullable="false" />
+      </column>
+      <column name="published_year" type="int" remarks="Дата публикации">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+  </changeSet>
+
+  <changeSet id="4" author="Dmitrii">
+    <createTable tableName="author_book" remarks="Связь: авторы-книги">
+      <column name="id" type="bigserial">
+        <constraints primaryKey="true" nullable="false" />
+      </column>
+      <column name="author_id" type="bigint" remarks="ID автора">
+        <constraints nullable="false" foreignKeyName="author_book_author_id_fk" references="authors(id)" />
+      </column>
+      <column name="book_id" type="bigint" remarks="ID книги">
+        <constraints nullable="false" foreignKeyName="author_book_book_id_fk" references="books(id)" />
+      </column>
+    </createTable>
+  </changeSet>
+
+  <changeSet id="5" author="Dmitrii">
+    <createTable tableName="book_genre" remarks="Связь: книги-жанры">
+      <column name="id" type="bigserial">
+        <constraints primaryKey="true" nullable="false" />
+      </column>
+      <column name="book_id" type="bigint" remarks="ID книги">
+        <constraints nullable="false" foreignKeyName="book_genre_book_id_fk" references="books(id)" />
+      </column>
+      <column name="genre_id" type="bigint" remarks="ID жанра">
+        <constraints nullable="false" foreignKeyName="book_genre_genre_id_fk" references="genres(id)" />
+      </column>
+    </createTable>
+  </changeSet>
+
+  <changeSet id="6" author="Dmitrii">
+    <createIndex indexName="book_genre_book_id_index" tableName="book_genre">
+      <column name="book_id"/>
+    </createIndex>
+  </changeSet>
+
+  <changeSet id="7" author="Dmitrii">
+    <createIndex indexName="book_genre_genre_id_index" tableName="book_genre">
+      <column name="genre_id"/>
+    </createIndex>
+  </changeSet>
+
+  <changeSet id="8" author="Dmitrii">
+    <createIndex indexName="genres_title_index" tableName="genres">
+      <column name="title"/>
+    </createIndex>
+  </changeSet>
+
+  <changeSet id="9" author="Dmitrii">
+    <createIndex indexName="authors_full_name_index" tableName="authors">
+      <column name="full_name"/>
+    </createIndex>
+  </changeSet>
+
+  <changeSet id="10" author="Dmitrii">
+    <createIndex indexName="books_title_index" tableName="books">
+      <column name="title"/>
+    </createIndex>
+  </changeSet>
+
+  <changeSet id="11" author="Dmitrii" runOnChange="true">
+    <loadUpdateData tableName="genres" primaryKey="id" separator=";"
+      file="db/migration/data/genres.csv">
+      <column header="id" name="id" type="bigint"/>
+      <column header="title" name="title" type="varchar(50)"/>
+    </loadUpdateData>
+  </changeSet>
+
+  <changeSet id="12" author="Dmitrii" runOnChange="true">
+    <loadUpdateData tableName="authors" primaryKey="id" separator=";"
+      file="db/migration/data/authors.csv">
+      <column header="id" name="id" type="bigint"/>
+      <column header="full_name" name="full_name" type="varchar(500)"/>
+      <column header="birth_date" name="birth_date" type="date"/>
+    </loadUpdateData>
+  </changeSet>
+
+  <changeSet id="13" author="Dmitrii" runOnChange="true">
+    <loadUpdateData tableName="books" primaryKey="id" separator=";"
+      file="db/migration/data/books.csv">
+      <column header="id" name="id" type="bigint"/>
+      <column header="title" name="title" type="varchar(500)"/>
+      <column header="published_year" name="published_year" type="int"/>
+    </loadUpdateData>
+  </changeSet>
+
+  <changeSet id="14" author="Dmitrii" runOnChange="true">
+    <loadUpdateData tableName="author_book" primaryKey="id" separator=";"
+      file="db/migration/data/author-book.csv">
+      <column header="author_id" name="author_id" type="bigint"/>
+      <column header="book_id" name="book_id" type="bigint"/>
+    </loadUpdateData>
+  </changeSet>
+
+  <changeSet id="15" author="Dmitrii" runOnChange="true">
+    <loadUpdateData tableName="book_genre" primaryKey="id" separator=";"
+      file="db/migration/data/book-genre.csv">
+      <column header="book_id" name="book_id" type="bigint"/>
+      <column header="genre_id" name="genre_id" type="bigint"/>
+    </loadUpdateData>
+  </changeSet>
+
+</databaseChangeLog>

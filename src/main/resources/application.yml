@@ -1,0 +1,8 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: ${EMPLOYEE_DB_URL:jdbc:postgresql://127.0.0.1:10905/libraryforyandex}
+    username: ${EMPLOYEE_DB_USER:user}
+    password: ${EMPLOYEE_DB_PASSWORD:qwerty}
+  liquibase:
+    change-log: classpath:db/migration/master.xml
