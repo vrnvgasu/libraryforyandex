@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.demo.libraryforyandex.controller.genre.dto.request.GenreRequestDto;
 import ru.demo.libraryforyandex.controller.genre.dto.response.GenreResponseDto;
 import ru.demo.libraryforyandex.data.dto.GenreDto;
@@ -16,13 +17,14 @@ import ru.demo.libraryforyandex.service.BaseService;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class GenreService extends BaseService<GenreResponseDto, GenreRequestDto> {
 
 	private final GenreMapper mapper;
 	private final ModelMapper modelMapper;
 
-
 	@Override
+	@Transactional(readOnly = true)
 	public List<GenreResponseDto> getAll() {
 		return mapper.findAll().stream()
 				.map(el -> modelMapper.map(el, GenreResponseDto.class))
@@ -43,6 +45,7 @@ public class GenreService extends BaseService<GenreResponseDto, GenreRequestDto>
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public GenreResponseDto findById(Long id) {
 		return modelMapper.map(mapper.findById(id)
 				.orElseThrow(() -> new NotFoundException(String.format(NOT_FOUND_BY_ID, id))),

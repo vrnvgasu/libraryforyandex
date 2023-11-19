@@ -4,6 +4,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.demo.libraryforyandex.controller.book.dto.response.BookResponseDto;
 import ru.demo.libraryforyandex.controller.book.request.BookRequestDto;
 import ru.demo.libraryforyandex.data.dto.BookData;
@@ -14,6 +15,7 @@ import ru.demo.libraryforyandex.service.bookservice.handler.GetBookByIdHandler;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class BookService extends BaseService<BookResponseDto, BookRequestDto> {
 
 	private final GetAllFilterHandler getAllFilterHandler;
@@ -25,15 +27,18 @@ public class BookService extends BaseService<BookResponseDto, BookRequestDto> {
 	private final BookMapper mapper;
 
 	@Override
+	@Transactional(readOnly = true)
 	public BookResponseDto findById(Long id) {
 		return getBookByIdHandler.handle(id);
 	}
 
+	@Transactional(readOnly = true)
 	public List<BookResponseDto> getAll(String authorNameParam, String genreParam) {
 		return getAllFilterHandler.handle(authorNameParam, genreParam);
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<BookResponseDto> getAll() {
 		return getAll(null, null);
 	}
@@ -42,6 +47,10 @@ public class BookService extends BaseService<BookResponseDto, BookRequestDto> {
 	public BookResponseDto create(BookRequestDto dto) {
 		BookData data = modelMapper.map(dto, BookData.class);
 		mapper.save(data);
+
+		if (!dto.getGenreIds().isEmpty()) {
+			mapper.attachGenres(dto.getGenreIds(), data.getId());
+		}
 		return findById(data.getId());
 	}
 

@@ -6,6 +6,8 @@ import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Many;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.Options.FlushCachePolicy;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
@@ -51,6 +53,7 @@ public interface BookMapper {
 
 	@Insert("insert into books(title, published_year) values (#{title}, #{publishedYear})")
 	@SelectKey(statement = "select currval('books_id_seq')", keyProperty = "id", before = false, resultType = long.class)
+	@Options(flushCache = FlushCachePolicy.TRUE)
 	Long save(BookData dto);
 
 	@Update("update books set title = #{dto.title}, published_year = #{dto.publishedYear} where id=#{id}")
@@ -62,5 +65,19 @@ public interface BookMapper {
 			delete from books where id = #{id};
 			""")
 	void delete(Long id);
+
+	@Insert({
+			"<script>",
+			"INSERT INTO book_genre",
+			"(genre_id, book_id)",
+			"VALUES" +
+					"<foreach item='genreId' collection='genreIds' open='' separator=',' close=''>" +
+					"(" +
+					"#{genreId,jdbcType=BIGINT},",
+			"#{id,jdbcType=BIGINT}",
+			")" +
+					"</foreach>",
+			"</script>"})
+	void attachGenres(@Param("genreIds") List<Long> genreIds, @Param("id") Long id);
 
 }

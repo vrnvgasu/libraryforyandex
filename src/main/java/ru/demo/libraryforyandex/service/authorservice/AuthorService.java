@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.demo.libraryforyandex.controller.author.dto.request.AuthorRequestDto;
 import ru.demo.libraryforyandex.controller.author.dto.response.AuthorResponseDto;
 import ru.demo.libraryforyandex.data.dto.AuthorDto;
@@ -16,6 +17,7 @@ import ru.demo.libraryforyandex.service.BaseService;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class AuthorService extends BaseService<AuthorResponseDto, AuthorRequestDto> {
 
 	private final AuthorMapper mapper;
@@ -23,6 +25,7 @@ public class AuthorService extends BaseService<AuthorResponseDto, AuthorRequestD
 
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<AuthorResponseDto> getAll() {
 		return mapper.findAll().stream()
 				.map(el -> modelMapper.map(el, AuthorResponseDto.class))
@@ -43,6 +46,7 @@ public class AuthorService extends BaseService<AuthorResponseDto, AuthorRequestD
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public AuthorResponseDto findById(Long id) {
 		return modelMapper.map(mapper.findById(id)
 				.orElseThrow(() -> new NotFoundException(String.format(NOT_FOUND_BY_ID, id))),
