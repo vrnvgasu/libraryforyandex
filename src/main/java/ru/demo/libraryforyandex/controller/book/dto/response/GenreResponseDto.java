@@ -4,11 +4,12 @@ import java.util.Objects;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import ru.demo.libraryforyandex.data.RequestDto;
 
 @Getter
 @Setter
 @Builder
-public class GenreResponseDto {
+public class GenreResponseDto implements RequestDto {
 
 	private Long id;
 
