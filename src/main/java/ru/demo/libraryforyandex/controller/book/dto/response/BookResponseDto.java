@@ -3,14 +3,18 @@ package ru.demo.libraryforyandex.controller.book.dto.response;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Builder.Default;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class BookResponseDto {
 
 	private Long id;

@@ -23,6 +23,7 @@ public interface BookMapper {
 
 	@Select("select *, b.id as bookId from books b where id = #{id}")
 	@Results(value = {
+			@Result(property = "publishedYear", column = "published_year"),
 			@Result(property = "genres", javaType = List.class,
 					column = "bookId", many = @Many(select = "ru.demo.libraryforyandex.data.mapper.GenreMapper.findByBookId")),
 			@Result(property = "authors", javaType = List.class,

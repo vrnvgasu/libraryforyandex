@@ -1,14 +1,18 @@
 package ru.demo.libraryforyandex.controller.book.dto.response;
 
 import java.util.Objects;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ru.demo.libraryforyandex.data.RequestDto;
 
 @Getter
 @Setter
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class GenreResponseDto implements RequestDto {
 
 	private Long id;
