@@ -2,6 +2,7 @@ package ru.demo.libraryforyandex.data.mapper;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -38,5 +39,23 @@ public interface GenreMapper {
 
 	@Delete("delete from genres where id = #{id}")
 	void delete(Long id);
+
+	@Select("""
+			<script>
+			select id from genres 
+			where id in 
+			  <foreach item='item' index='index' collection='ids' open='(' separator=',' close=')'>
+				  #{item}
+			  </foreach>
+			</script>
+			""")
+	Set<Long> getGenresIdsByIdSet(@Param("ids") Set<Long> ids);
+
+	@Select("""
+			select count(*) > 0 
+			from book_genre
+			where genre_id = #{id}
+			""")
+	boolean hasBookRelation(@Param("id") Long id);
 
 }

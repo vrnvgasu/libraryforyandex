@@ -1,6 +1,7 @@
 package ru.demo.libraryforyandex.controller.book.request;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import lombok.Getter;
 import lombok.Setter;
 import ru.demo.libraryforyandex.data.RequestDto;
@@ -13,8 +14,8 @@ public class BookRequestDto implements RequestDto {
 
 	private Integer publishedYear;
 
-	private List<Long> genreIds;
+	private Set<Long> genreIds = new HashSet<>();
 
-	private List<Long> authorIds;
+	private Set<Long> authorIds = new HashSet<>();
 
 }

@@ -2,6 +2,7 @@ package ru.demo.libraryforyandex.data.mapper;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Many;
@@ -66,18 +67,32 @@ public interface BookMapper {
 			""")
 	void delete(Long id);
 
-	@Insert({
-			"<script>",
-			"INSERT INTO book_genre",
-			"(genre_id, book_id)",
-			"VALUES" +
-					"<foreach item='genreId' collection='genreIds' open='' separator=',' close=''>" +
-					"(" +
-					"#{genreId,jdbcType=BIGINT},",
-			"#{id,jdbcType=BIGINT}",
-			")" +
-					"</foreach>",
-			"</script>"})
-	void attachGenres(@Param("genreIds") List<Long> genreIds, @Param("id") Long id);
+	@Insert("""
+			<script>
+			INSERT INTO book_genre (genre_id, book_id)
+			VALUES
+			  <foreach item='genreId' collection='genreIds' open='' separator=',' close=''>
+				  (#{genreId,jdbcType=BIGINT}, #{id,jdbcType=BIGINT})
+				</foreach>
+			</script>
+			""")
+	void attachGenres(@Param("genreIds") Set<Long> genreIds, @Param("id") Long id);
+
+	@Insert("""
+			<script>
+			INSERT INTO author_book (author_id, book_id)
+			VALUES
+			  <foreach item='authorId' collection='authorIds' open='' separator=',' close=''>
+				  (#{authorId,jdbcType=BIGINT}, #{id,jdbcType=BIGINT})
+				</foreach>
+			</script>
+			""")
+	void attachAuthors(@Param("authorIds") Set<Long> authorIds, @Param("id") Long id);
+
+	@Delete("""
+			delete from book_genre where book_id = #{id};
+			delete from author_book where book_id = #{id};
+			""")
+	void detach(Long id);
 
 }

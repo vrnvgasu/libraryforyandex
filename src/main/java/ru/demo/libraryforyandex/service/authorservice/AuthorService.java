@@ -2,7 +2,9 @@ package ru.demo.libraryforyandex.service.authorservice;
 
 import static ru.demo.libraryforyandex.exception.NotFoundException.NOT_FOUND_BY_ID;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -13,6 +15,7 @@ import ru.demo.libraryforyandex.controller.author.dto.response.AuthorResponseDto
 import ru.demo.libraryforyandex.data.dto.AuthorDto;
 import ru.demo.libraryforyandex.data.mapper.AuthorMapper;
 import ru.demo.libraryforyandex.exception.NotFoundException;
+import ru.demo.libraryforyandex.exception.RelationException;
 import ru.demo.libraryforyandex.service.BaseService;
 
 @Service
@@ -55,7 +58,29 @@ public class AuthorService extends BaseService<AuthorResponseDto, AuthorRequestD
 
 	@Override
 	public void delete(Long id) {
+		if (mapper.hasBookRelation(id)) {
+			throw new RelationException("Author has relations, id:" + id);
+		}
+
 		mapper.delete(id);
+	}
+
+	public void checkAreExistByIds(Set<Long> ids) {
+		if (ids == null || ids.isEmpty()) {
+			return;
+		}
+
+		HashSet<Long> copy = new HashSet<>(ids);
+		copy.removeAll(mapper.getAuthorsIdsByIdSet(ids));
+
+		if (copy.isEmpty()) {
+			return;
+		}
+
+		throw new NotFoundException(String.format(
+				"Can't found authors with id in %s",
+				copy.stream().map(String::valueOf).collect(Collectors.toSet())
+		));
 	}
 
 }

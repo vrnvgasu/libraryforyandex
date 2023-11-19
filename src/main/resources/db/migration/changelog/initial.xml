@@ -98,7 +98,12 @@
     </createIndex>
   </changeSet>
 
-  <changeSet id="11" author="Dmitrii" runOnChange="true">
+  <changeSet id="11" author="Dmitrii">
+    <addUniqueConstraint tableName="author_book" columnNames="author_id,book_id"/>
+    <addUniqueConstraint tableName="book_genre" columnNames="genre_id,book_id"/>
+  </changeSet>
+
+  <changeSet id="12" author="Dmitrii" runOnChange="true">
     <sql>ALTER SEQUENCE genres_id_seq RESTART WITH 6;</sql>
     <loadUpdateData tableName="genres" primaryKey="id" separator=";"
       file="db/migration/data/genres.csv">
@@ -107,7 +112,7 @@
     </loadUpdateData>
   </changeSet>
 
-  <changeSet id="12" author="Dmitrii" runOnChange="true">
+  <changeSet id="13" author="Dmitrii" runOnChange="true">
     <sql>ALTER SEQUENCE authors_id_seq RESTART WITH 6;</sql>
     <loadUpdateData tableName="authors" primaryKey="id" separator=";"
       file="db/migration/data/authors.csv">
@@ -117,7 +122,7 @@
     </loadUpdateData>
   </changeSet>
 
-  <changeSet id="13" author="Dmitrii" runOnChange="true">
+  <changeSet id="14" author="Dmitrii" runOnChange="true">
     <sql>ALTER SEQUENCE books_id_seq RESTART WITH 6;</sql>
     <loadUpdateData tableName="books" primaryKey="id" separator=";"
       file="db/migration/data/books.csv">
@@ -127,7 +132,7 @@
     </loadUpdateData>
   </changeSet>
 
-  <changeSet id="14" author="Dmitrii" runOnChange="true">
+  <changeSet id="15" author="Dmitrii" runOnChange="true">
     <loadUpdateData tableName="author_book" primaryKey="id" separator=";"
       file="db/migration/data/author-book.csv">
       <column header="author_id" name="author_id" type="bigint"/>
@@ -135,12 +140,13 @@
     </loadUpdateData>
   </changeSet>
 
-  <changeSet id="15" author="Dmitrii" runOnChange="true">
+  <changeSet id="16" author="Dmitrii" runOnChange="true">
     <loadUpdateData tableName="book_genre" primaryKey="id" separator=";"
       file="db/migration/data/book-genre.csv">
       <column header="book_id" name="book_id" type="bigint"/>
       <column header="genre_id" name="genre_id" type="bigint"/>
     </loadUpdateData>
   </changeSet>
+
 
 </databaseChangeLog>

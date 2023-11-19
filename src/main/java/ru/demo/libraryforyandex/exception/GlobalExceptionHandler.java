@@ -18,4 +18,10 @@ public class GlobalExceptionHandler {
 		return new ResponseEntity<>(new ErrorResponse(e.getMessage()), HttpStatus.NOT_FOUND);
 	}
 
+	@ExceptionHandler(value = RelationException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public ResponseEntity<ErrorResponse> handleBadRequest(RelationException e) {
+		return new ResponseEntity<>(new ErrorResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
+	}
+
 }

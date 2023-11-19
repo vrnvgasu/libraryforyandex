@@ -2,6 +2,7 @@ package ru.demo.libraryforyandex.data.mapper;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -36,7 +37,7 @@ public interface AuthorMapper {
 	List<AuthorDto> findAll();
 
 	@Insert("insert into authors(full_name, birth_date) values (#{fullName}, #{birthDate})")
-	@SelectKey(statement="select currval('authors_id_seq')", keyProperty="id", before = false, resultType= long.class)
+	@SelectKey(statement = "select currval('authors_id_seq')", keyProperty = "id", before = false, resultType = long.class)
 	Long save(AuthorDto dto);
 
 	@Select("select * from authors where id = #{id}")
@@ -51,5 +52,23 @@ public interface AuthorMapper {
 
 	@Delete("delete from authors where id = #{id}")
 	void delete(Long id);
+
+	@Select("""
+			<script>
+			select id from authors 
+			where id in 
+			  <foreach item='item' index='index' collection='ids' open='(' separator=',' close=')'>
+				  #{item}
+			  </foreach>
+			</script>
+			""")
+	Set<Long> getAuthorsIdsByIdSet(@Param("ids") Set<Long> ids);
+
+	@Select("""
+			select count(*) > 0 
+			from author_book
+			where author_id = #{id}
+			""")
+	boolean hasBookRelation(@Param("id") Long id);
 
 }

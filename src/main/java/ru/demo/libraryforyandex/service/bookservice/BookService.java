@@ -10,8 +10,10 @@ import ru.demo.libraryforyandex.controller.book.request.BookRequestDto;
 import ru.demo.libraryforyandex.data.dto.BookData;
 import ru.demo.libraryforyandex.data.mapper.BookMapper;
 import ru.demo.libraryforyandex.service.BaseService;
+import ru.demo.libraryforyandex.service.authorservice.AuthorService;
 import ru.demo.libraryforyandex.service.bookservice.handler.GetAllFilterHandler;
 import ru.demo.libraryforyandex.service.bookservice.handler.GetBookByIdHandler;
+import ru.demo.libraryforyandex.service.genreservice.GenreService;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +27,10 @@ public class BookService extends BaseService<BookResponseDto, BookRequestDto> {
 	private final ModelMapper modelMapper;
 
 	private final BookMapper mapper;
+
+	private final AuthorService authorService;
+
+	private final GenreService genreService;
 
 	@Override
 	@Transactional(readOnly = true)
@@ -45,18 +51,37 @@ public class BookService extends BaseService<BookResponseDto, BookRequestDto> {
 
 	@Override
 	public BookResponseDto create(BookRequestDto dto) {
+		authorService.checkAreExistByIds(dto.getAuthorIds());
+		genreService.checkAreExistByIds(dto.getGenreIds());
 		BookData data = modelMapper.map(dto, BookData.class);
 		mapper.save(data);
 
 		if (!dto.getGenreIds().isEmpty()) {
 			mapper.attachGenres(dto.getGenreIds(), data.getId());
 		}
+
+		if (!dto.getAuthorIds().isEmpty()) {
+			mapper.attachAuthors(dto.getAuthorIds(), data.getId());
+		}
+
 		return findById(data.getId());
 	}
 
 	@Override
 	public BookResponseDto update(Long id, BookRequestDto dto) {
+		authorService.checkAreExistByIds(dto.getAuthorIds());
+		genreService.checkAreExistByIds(dto.getGenreIds());
 		mapper.update(id, modelMapper.map(dto, BookData.class));
+		mapper.detach(id);
+
+		if (!dto.getGenreIds().isEmpty()) {
+			mapper.attachGenres(dto.getGenreIds(), id);
+		}
+
+		if (!dto.getAuthorIds().isEmpty()) {
+			mapper.attachAuthors(dto.getAuthorIds(), id);
+		}
+
 		return findById(id);
 	}
 
