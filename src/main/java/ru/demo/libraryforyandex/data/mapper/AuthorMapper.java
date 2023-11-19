@@ -1,9 +1,18 @@
 package ru.demo.libraryforyandex.data.mapper;
 
+import java.util.List;
+import java.util.Optional;
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.SelectKey;
+import org.apache.ibatis.annotations.Update;
 import ru.demo.libraryforyandex.data.dto.AuthorData;
+import ru.demo.libraryforyandex.data.dto.AuthorDto;
 
 @Mapper
 public interface AuthorMapper {
@@ -18,5 +27,29 @@ public interface AuthorMapper {
 			+ " join author_book ab on ab.author_id = a.id"
 			+ " where ab.book_id = #{bookId}")
 	AuthorData findByBookId(Integer bookId);
+
+	@Select("select * from authors order by id")
+	@Results(value = {
+			@Result(property = "fullName", column = "full_name"),
+			@Result(property = "birthDate", column = "birth_date"),
+	})
+	List<AuthorDto> findAll();
+
+	@Insert("insert into authors(full_name, birth_date) values (#{fullName}, #{birthDate})")
+	@SelectKey(statement="select currval('authors_id_seq')", keyProperty="id", before = false, resultType= long.class)
+	Long save(AuthorDto dto);
+
+	@Select("select * from authors where id = #{id}")
+	@Results(value = {
+			@Result(property = "fullName", column = "full_name"),
+			@Result(property = "birthDate", column = "birth_date"),
+	})
+	Optional<AuthorDto> findById(Long id);
+
+	@Update("update authors set full_name = #{dto.fullName}, birth_date = #{dto.birthDate} where id=#{id}")
+	void update(@Param("id") Long id, AuthorDto dto);
+
+	@Delete("delete from authors where id = #{id}")
+	void delete(Long id);
 
 }
