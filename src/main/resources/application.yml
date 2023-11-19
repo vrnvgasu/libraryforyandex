@@ -6,3 +6,7 @@ spring:
     password: ${EMPLOYEE_DB_PASSWORD:qwerty}
   liquibase:
     change-log: classpath:db/migration/master.xml
+
+logging:
+  level:
+    ru.demo.libraryforyandex.data.mapper: debug

@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import ru.demo.libraryforyandex.dto.ErrorResponse;
+import ru.demo.libraryforyandex.exception.dto.ErrorResponse;
 
 @ControllerAdvice
 @Slf4j
