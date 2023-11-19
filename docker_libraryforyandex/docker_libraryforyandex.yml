@@ -1,5 +1,18 @@
 version: "3.9"
 services:
+  deploy:
+    depends_on:
+      - postgres
+    container_name: deploy_libraryforyandex
+    build:
+      context: ../
+      dockerfile: Dockerfile
+    ports:
+      - "10906:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db_libraryforyandex:5432/libraryforyandex
+      - SPRING_DATASOURCE_USERNAME=user
+      - SPRING_DATASOURCE_PASSWORD=qwerty
   postgres:
     container_name: db_libraryforyandex
     image: postgres
