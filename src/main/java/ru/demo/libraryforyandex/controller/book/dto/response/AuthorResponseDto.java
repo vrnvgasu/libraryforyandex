@@ -1,4 +1,4 @@
-package ru.demo.libraryforyandex.controller.dto.response;
+package ru.demo.libraryforyandex.controller.book.dto.response;
 
 import java.time.LocalDate;
 import java.util.Objects;

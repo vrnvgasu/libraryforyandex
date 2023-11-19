@@ -3,7 +3,7 @@ package ru.demo.libraryforyandex.service.bookservice;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.demo.libraryforyandex.controller.dto.response.BookResponseDto;
+import ru.demo.libraryforyandex.controller.book.dto.response.BookResponseDto;
 import ru.demo.libraryforyandex.service.bookservice.handler.GetAllFilterHandler;
 import ru.demo.libraryforyandex.service.bookservice.handler.GetBookByIdHandler;
 

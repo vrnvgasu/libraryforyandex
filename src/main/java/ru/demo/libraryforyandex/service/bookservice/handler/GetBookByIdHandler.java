@@ -5,9 +5,9 @@ import static ru.demo.libraryforyandex.exception.NotFoundException.NOT_FOUND_BY_
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import ru.demo.libraryforyandex.controller.dto.response.AuthorResponseDto;
-import ru.demo.libraryforyandex.controller.dto.response.BookResponseDto;
-import ru.demo.libraryforyandex.controller.dto.response.GenreResponseDto;
+import ru.demo.libraryforyandex.controller.book.dto.response.AuthorResponseDto;
+import ru.demo.libraryforyandex.controller.book.dto.response.BookResponseDto;
+import ru.demo.libraryforyandex.controller.book.dto.response.GenreResponseDto;
 import ru.demo.libraryforyandex.data.dto.BookData;
 import ru.demo.libraryforyandex.data.mapper.BookMapper;
 import ru.demo.libraryforyandex.exception.NotFoundException;

@@ -99,6 +99,7 @@
   </changeSet>
 
   <changeSet id="11" author="Dmitrii" runOnChange="true">
+    <sql>ALTER SEQUENCE genres_id_seq RESTART WITH 6;</sql>
     <loadUpdateData tableName="genres" primaryKey="id" separator=";"
       file="db/migration/data/genres.csv">
       <column header="id" name="id" type="bigint"/>
@@ -107,6 +108,7 @@
   </changeSet>
 
   <changeSet id="12" author="Dmitrii" runOnChange="true">
+    <sql>ALTER SEQUENCE authors_id_seq RESTART WITH 6;</sql>
     <loadUpdateData tableName="authors" primaryKey="id" separator=";"
       file="db/migration/data/authors.csv">
       <column header="id" name="id" type="bigint"/>
@@ -116,6 +118,7 @@
   </changeSet>
 
   <changeSet id="13" author="Dmitrii" runOnChange="true">
+    <sql>ALTER SEQUENCE books_id_seq RESTART WITH 6;</sql>
     <loadUpdateData tableName="books" primaryKey="id" separator=";"
       file="db/migration/data/books.csv">
       <column header="id" name="id" type="bigint"/>
