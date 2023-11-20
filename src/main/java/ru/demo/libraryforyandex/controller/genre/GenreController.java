@@ -1,6 +1,7 @@
 package ru.demo.libraryforyandex.controller.genre;
 
 import java.util.List;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,12 +28,12 @@ public class GenreController {
 	}
 
 	@PostMapping
-	public GenreResponseDto create(@RequestBody GenreRequestDto dto) {
+	public GenreResponseDto create(@Valid @RequestBody GenreRequestDto dto) {
 		return service.create(dto);
 	}
 
 	@PutMapping("/{id}")
-	public GenreResponseDto update(@PathVariable Long id, @RequestBody GenreRequestDto dto) {
+	public GenreResponseDto update(@PathVariable Long id, @Valid @RequestBody GenreRequestDto dto) {
 		return service.update(id, dto);
 	}
 

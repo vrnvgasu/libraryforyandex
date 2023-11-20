@@ -1,6 +1,7 @@
 package ru.demo.libraryforyandex.controller.book;
 
 import java.util.List;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,12 +35,12 @@ public class BookController {
 	}
 
 	@PostMapping
-	public BookResponseDto create(@RequestBody BookRequestDto dto) {
+	public BookResponseDto create(@Valid @RequestBody BookRequestDto dto) {
 		return bookService.create(dto);
 	}
 
 	@PutMapping("/{id}")
-	public BookResponseDto update(@PathVariable Long id, @RequestBody BookRequestDto dto) {
+	public BookResponseDto update(@PathVariable Long id, @Valid @RequestBody BookRequestDto dto) {
 		return bookService.update(id, dto);
 	}
 	@DeleteMapping("/{id}")

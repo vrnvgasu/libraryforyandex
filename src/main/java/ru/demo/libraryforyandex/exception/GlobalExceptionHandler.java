@@ -3,6 +3,7 @@ package ru.demo.libraryforyandex.exception;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -18,9 +19,9 @@ public class GlobalExceptionHandler {
 		return new ResponseEntity<>(new ErrorResponse(e.getMessage()), HttpStatus.NOT_FOUND);
 	}
 
-	@ExceptionHandler(value = RelationException.class)
+	@ExceptionHandler(value = {RelationException.class, MethodArgumentNotValidException.class})
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public ResponseEntity<ErrorResponse> handleBadRequest(RelationException e) {
+	public ResponseEntity<ErrorResponse> handleBadRequest(Exception e) {
 		return new ResponseEntity<>(new ErrorResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
 	}
 

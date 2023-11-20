@@ -1,6 +1,7 @@
 package ru.demo.libraryforyandex.controller.author;
 
 import java.util.List;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,12 +28,12 @@ public class AuthorController {
 	}
 
 	@PostMapping
-	public AuthorResponseDto create(@RequestBody AuthorRequestDto dto) {
+	public AuthorResponseDto create(@Valid @RequestBody AuthorRequestDto dto) {
 		return service.create(dto);
 	}
 
 	@PutMapping("/{id}")
-	public AuthorResponseDto update(@PathVariable Long id, @RequestBody AuthorRequestDto dto) {
+	public AuthorResponseDto update(@PathVariable Long id, @Valid @RequestBody AuthorRequestDto dto) {
 		return service.update(id, dto);
 	}
 
